@@ -1,0 +1,4 @@
+# Real secrets for this deployment. Never commit.
+# Kept here rather than in the repository-root .gitignore so that no NetBox core
+# file is modified — see CODE_BRANDING.md.
+.env

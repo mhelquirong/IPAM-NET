@@ -27,9 +27,15 @@ stay a routine `git checkout`.
 ### Docker Compose (quickest)
 
 ```bash
+cp deploy/.env.example deploy/.env
+python netbox/generate_secret_key.py        # once per value, paste into deploy/.env
 docker compose -f deploy/docker-compose.yml up -d --build
 # http://localhost:8000/
 ```
+
+There are no secrets committed to this repository, so `deploy/.env` must be
+filled in first — Compose refuses to start without it and tells you what is
+missing. `deploy/.env` is gitignored.
 
 ### Native install
 
@@ -41,6 +47,7 @@ python3 -m venv venv && ./venv/bin/pip install -r requirements.txt
 ./venv/bin/pip install -e ./code_branding
 
 cp deploy/configuration.py netbox/netbox/configuration.py   # then edit it
+export SECRET_KEY=...  API_TOKEN_PEPPER_1=...               # required, no defaults
 ./venv/bin/python netbox/manage.py migrate
 ./venv/bin/python netbox/manage.py collectstatic --no-input
 ./venv/bin/python netbox/manage.py createsuperuser
@@ -54,11 +61,11 @@ PLUGINS = ['netbox_code_branding']
 
 ## Before going to production
 
-- [ ] Generate a real `SECRET_KEY` (`python netbox/generate_secret_key.py`) — the
-      value in `deploy/configuration.py` is a clearly-labelled local placeholder.
-- [ ] Generate a real `API_TOKEN_PEPPERS` entry (same command, 50+ characters).
-- [ ] Change the superuser password; the compose stack seeds `admin`/`admin`.
-- [ ] Set `ALLOWED_HOSTS` to your actual hostnames instead of `['*']`.
+- [x] `SECRET_KEY`, `API_TOKEN_PEPPER_1` and `SUPERUSER_PASSWORD` have no
+      committed defaults — the stack will not start until you supply them in
+      `deploy/.env`. Generate each with `python netbox/generate_secret_key.py`.
+- [ ] Set `ALLOWED_HOSTS` to your actual hostnames; it defaults to `*`, e.g.
+      `ALLOWED_HOSTS=ipam.example.com` in `deploy/.env`.
 - [ ] Serve behind HTTPS with gunicorn + nginx, not `runserver`.
 - [ ] **Disable GitHub Actions for this repository.** The upstream NetBox
       workflows in `.github/workflows/` came along with the source and are not

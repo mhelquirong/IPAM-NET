@@ -8,7 +8,27 @@ PLUGINS_CONFIG.
 
 import os
 
-ALLOWED_HOSTS = ['*']
+from django.core.exceptions import ImproperlyConfigured
+
+
+def _required(name, hint):
+    """Read a required secret from the environment, or fail loudly.
+
+    These deliberately have no in-repo default. A fallback committed here would
+    be a published signing key: anyone who deployed without overriding it would
+    be running on a value the whole internet can read.
+    """
+    value = os.environ.get(name)
+    if not value:
+        raise ImproperlyConfigured(
+            f'{name} is not set. This repository ships no default for it on purpose.\n'
+            f'{hint}\n'
+            f'Generate a value with:  python netbox/generate_secret_key.py'
+        )
+    return value
+
+
+ALLOWED_HOSTS = [h for h in os.environ.get('ALLOWED_HOSTS', '*').split(',') if h]
 
 DATABASES = {
     'default': {
@@ -37,14 +57,16 @@ REDIS = {
     },
 }
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'code-branding-local-validation-key-not-for-production-use!!')
+SECRET_KEY = _required(
+    'SECRET_KEY',
+    'It signs sessions, password-reset tokens and CSRF tokens.',
+)
 
-# Required for v2 API tokens. Replace before any real deployment — generate with
-# `python netbox/generate_secret_key.py`.
+# Peppers hash v2 API tokens. Must be at least 50 characters.
 API_TOKEN_PEPPERS = {
-    1: os.environ.get(
+    1: _required(
         'API_TOKEN_PEPPER_1',
-        'local-validation-pepper-do-not-use-in-production-000000000000',
+        'It is used to hash v2 API tokens; rotating it invalidates existing ones.',
     ),
 }
 

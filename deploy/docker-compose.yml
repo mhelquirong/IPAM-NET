@@ -42,9 +42,13 @@ services:
       DB_USER: netbox
       DB_PASSWORD: netbox
       REDIS_HOST: redis
-      SUPERUSER_NAME: admin
-      SUPERUSER_EMAIL: admin@code.sa
-      SUPERUSER_PASSWORD: admin
+      SUPERUSER_NAME: ${SUPERUSER_NAME:-admin}
+      SUPERUSER_EMAIL: ${SUPERUSER_EMAIL:-admin@code.sa}
+      # No defaults for these three: a value committed here would be a published
+      # credential. Compose refuses to start and prints the message if unset.
+      SECRET_KEY: ${SECRET_KEY:?not set — copy deploy/.env.example to deploy/.env and fill it in}
+      API_TOKEN_PEPPER_1: ${API_TOKEN_PEPPER_1:?not set — copy deploy/.env.example to deploy/.env and fill it in}
+      SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD:?not set — copy deploy/.env.example to deploy/.env and fill it in}
     ports:
       - '8000:8000'
     volumes:

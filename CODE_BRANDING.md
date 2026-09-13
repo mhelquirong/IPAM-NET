@@ -60,8 +60,10 @@ code_branding/                      # the branding plugin (pip-installable)
 deploy/                             # local validation stack (not required in prod)
 ├── Dockerfile
 ├── docker-compose.yml
-├── configuration.py
-└── entrypoint.sh
+├── configuration.py                # secrets required from env, no fallbacks
+├── entrypoint.sh
+├── .env.example                    # template for the required secrets
+└── .gitignore                      # keeps the real .env out of git
 CODE_BRANDING.md                    # this document
 ```
 
@@ -272,8 +274,9 @@ dashboard, an IPAM list view, an object detail view and a create form:
 ## 6. Local validation stack
 
 ```bash
+cp deploy/.env.example deploy/.env    # fill in; there are no committed defaults
 docker compose -f deploy/docker-compose.yml up -d --build
-# http://localhost:8000/   admin / admin
+# http://localhost:8000/
 ```
 
 Builds NetBox from this checkout (unmodified) with the plugin installed on top,
@@ -300,6 +303,11 @@ cp deploy/configuration.py netbox/netbox/configuration.py   # edit DB/Redis host
 ./venv/bin/python netbox/manage.py runserver 0.0.0.0:8000 --insecure
 ```
 
-Neither is intended for production; use the standard NetBox installation guide
-with gunicorn + nginx for that, and change `SECRET_KEY`, `API_TOKEN_PEPPERS` and
-the superuser password.
+`SECRET_KEY`, `API_TOKEN_PEPPER_1` and `SUPERUSER_PASSWORD` are read from the
+environment with **no in-repo fallback**. `deploy/configuration.py` raises
+`ImproperlyConfigured` naming the missing variable, and Compose refuses to start
+with a message pointing at `deploy/.env`. A committed default would be a
+published signing key the moment this repository is public.
+
+Neither stack is intended for production; use the standard NetBox installation
+guide with gunicorn + nginx for that.
