@@ -20,6 +20,7 @@ stay a routine `git checkout`.
 | `code_branding/` | The `netbox_code_branding` plugin — the entire customization |
 | `deploy/` | Docker Compose stack, Dockerfile and example configuration |
 | `CODE_BRANDING.md` | Architecture, design decisions, validation and upgrade notes |
+| `deploy/DEPLOY-UBUNTU.md` | Step-by-step deployment onto a remote Ubuntu server |
 | `logo-code.svg` | The source brand asset every other image is generated from |
 
 ## Deploy
@@ -37,10 +38,12 @@ There are no secrets committed to this repository, so `deploy/.env` must be
 filled in first — Compose refuses to start without it and tells you what is
 missing. `deploy/.env` is gitignored.
 
-### Native install
+### Remote Ubuntu server
 
-Follow the [NetBox installation guide](https://netboxlabs.com/docs/netbox/installation/)
-for PostgreSQL, Redis, gunicorn and nginx, then:
+Full walkthrough — PostgreSQL, Redis, gunicorn, systemd, nginx and TLS — in
+**[`deploy/DEPLOY-UBUNTU.md`](../deploy/DEPLOY-UBUNTU.md)**.
+
+### Native install (summary)
 
 ```bash
 python3 -m venv venv && ./venv/bin/pip install -r requirements.txt
