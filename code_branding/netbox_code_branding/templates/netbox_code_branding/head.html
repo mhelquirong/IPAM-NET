@@ -1,0 +1,52 @@
+{% load static %}
+{% comment %}
+CODE branding bundle. Injected at the end of <head> by {% plugin_head %}.
+
+Note: Django's {# ... #} comment syntax is single-line only — a multi-line one
+is emitted verbatim, which would terminate <head> parsing. Use this tag form
+for anything spanning more than one line.
+{% endcomment %}
+
+{# Favicons — declared after NetBox's own icon links, so these win on order. #}
+<link rel="icon" type="image/svg+xml" href="{% static 'netbox_code_branding/img/favicon.svg' %}">
+<link rel="icon" type="image/x-icon" href="{% static 'netbox_code_branding/img/favicon.ico' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'netbox_code_branding/img/code-touch-icon-180.png' %}">
+<meta name="theme-color" content="#221F33">
+<meta name="application-name" content="{{ branding.title_suffix|default:'CODE IPAM' }}">
+
+{% if branding.apply_theme|default_if_none:True %}
+  {# Theme — loaded after netbox.css, so it wins on document order alone. #}
+  <link rel="stylesheet" href="{% static 'netbox_code_branding/css/code-branding.css' %}">
+
+  {% comment %}
+  Deployment strings surfaced to CSS. These come from PLUGINS_CONFIG, which is
+  administrator-controlled; addslashes escapes them for a CSS string literal.
+  {% endcomment %}
+  <style>
+    :root {
+      --code-product-name: "{{ branding.product_name|default:'IP Management'|addslashes }}";
+      --code-login-tagline: "{{ branding.login_tagline|default:'Inspire Your Vision'|addslashes }}";
+      {% if branding.show_powered_by|default_if_none:True %}
+      --code-powered-by: "Powered by NetBox {{ settings.RELEASE.version|addslashes }}";
+      {% else %}
+      --code-powered-by: "";
+      {% endif %}
+    }
+  </style>
+{% endif %}
+
+{# Brand strings consumed by code-branding.js. #}
+<script type="application/json" id="code-branding-config">
+  {
+    "brandName": "{{ branding.brand_name|default:'CODE'|escapejs }}",
+    "productName": "{{ branding.product_name|default:'IP Management'|escapejs }}",
+    "titleSuffix": "{{ branding.title_suffix|default:'CODE IPAM'|escapejs }}",
+    "supportUrl": "{{ branding.support_url|default:''|escapejs }}",
+    "supportLabel": "{{ branding.support_label|default:''|escapejs }}",
+    "showPoweredBy": {% if branding.show_powered_by|default_if_none:True %}true{% else %}false{% endif %},
+    "netboxVersion": "{{ settings.RELEASE.version|escapejs }}"
+  }
+</script>
+
+{# Runs synchronously so the document title is corrected before first paint. #}
+<script src="{% static 'netbox_code_branding/js/code-branding.js' %}"></script>

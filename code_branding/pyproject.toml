@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netbox-code-branding"
+version = "1.0.0"
+description = "CODE corporate branding for NetBox — a CODE-branded IP Management platform powered by NetBox."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+authors = [{ name = "CODE" }]
+keywords = ["netbox", "netbox-plugin", "branding", "ipam"]
+classifiers = [
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: System Administrators",
+]
+
+# Intentionally no install_requires: the plugin is pure presentation and adds no
+# runtime dependency beyond the NetBox it is installed into.
+dependencies = []
+
+[project.urls]
+Homepage = "https://code.sa"
+
+[tool.setuptools.packages.find]
+include = ["netbox_code_branding*"]
+
+[tool.setuptools.package-data]
+netbox_code_branding = ["templates/**/*", "static/**/*"]

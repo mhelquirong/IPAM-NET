@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="CODE">
+  <rect width="64" height="64" rx="14" fill="#221F33"/>
+  <rect x="6.40" y="10.84" width="26.28" height="5.87" rx="2.94" fill="#F9863D"/>
+  <rect x="38.49" y="10.84" width="19.11" height="5.87" rx="2.94" fill="#D51C38"/>
+  <rect x="6.40" y="22.92" width="33.11" height="5.87" rx="2.94" fill="#D51C38"/>
+  <rect x="45.31" y="22.92" width="12.29" height="5.87" rx="2.94" fill="#F9863D"/>
+  <rect x="6.40" y="34.94" width="18.77" height="5.87" rx="2.94" fill="#00AAC8"/>
+  <rect x="30.29" y="34.94" width="27.31" height="5.87" rx="2.94" fill="#006EC6"/>
+  <rect x="6.40" y="47.02" width="34.47" height="5.87" rx="2.94" fill="#006EC6"/>
+  <rect x="47.02" y="47.02" width="10.58" height="5.87" rx="2.94" fill="#00AAC8"/>
+</svg>

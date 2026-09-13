@@ -1,0 +1,730 @@
+/* ==========================================================================
+   CODE branding for NetBox
+   --------------------------------------------------------------------------
+   Loaded from {% plugin_head %}, i.e. after netbox.css in document order, so
+   plain specificity is enough to win almost everywhere. !important is used
+   only where NetBox itself declares !important (noted inline at each site).
+
+   Palette and motifs are taken from the CODE logo (logo-code.svg) and the
+   CODE corporate site, https://code.sa:
+     - brandmark colours   #F9863D  #D51C38  #00AAC8  #006EC6
+     - primary text/navy   #221F33   (.colorOne)
+     - link/action blue    #006EC6   (.colorBlue)
+     - signature gradient  linear-gradient(109deg,#FAA26B 14.67%,#E74B62 110.18%)
+     - nav highlight       #FDE0CE with an asymmetric 5px 0 5px 5px corner
+     - type                Inter (already bundled with NetBox)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Brand tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  --code-navy: #221f33;
+  --code-blue: #006ec6;
+  --code-blue-ink: #002f69;
+  --code-blue-100: #e5f4ff;
+  --code-cyan: #00aac8;
+  --code-cyan-300: #4fc8e0;
+  --code-red: #d51c38;
+  --code-orange: #f9863d;
+
+  --code-grad-from: #faa26b;
+  --code-grad-to: #e74b62;
+  --code-gradient: linear-gradient(109deg, var(--code-grad-from) 14.67%, var(--code-grad-to) 110.18%);
+  --code-gradient-hover: linear-gradient(109deg, #cb7b48 14.67%, #a73143 110.18%);
+  --code-spectrum: linear-gradient(90deg, #f9863d 0%, #d51c38 34%, #00aac8 68%, #006ec6 100%);
+
+  --code-peach: #fde0ce;
+  --code-peach-pale: #feefe6;
+  --code-border: #d9d9d9;
+  --code-muted: #4f4f4f;
+  --code-muted-2: #8b8b8b;
+
+  --code-shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.06);
+  --code-shadow: 0 8px 24px rgba(149, 157, 165, 0.18);
+  --code-shadow-lg: 0 12px 74px rgba(0, 0, 0, 0.08);
+
+  --code-radius: 10px;
+  --code-radius-sm: 6px;
+  --code-radius-lg: 20px;
+  --code-radius-pill: 15px;
+  /* The site's signature asymmetric corner: square top-right, rounded elsewhere. */
+  --code-nav-radius: 5px 0 5px 5px;
+
+  --code-font: 'Inter', 'Tajawal', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Strings are overridden per-deployment by the inline <style> block that
+     head.html emits from PLUGINS_CONFIG; these are the fallbacks. */
+  --code-product-name: 'IP Management';
+  --code-login-tagline: 'Inspire Your Vision';
+  --code-powered-by: 'Powered by NetBox';
+}
+
+/* --------------------------------------------------------------------------
+   2. Tabler / Bootstrap token remapping — light
+   -------------------------------------------------------------------------- */
+
+:root,
+html[data-bs-theme='light'] {
+  --tblr-primary: var(--code-blue);
+  --tblr-primary-rgb: 0, 110, 198;
+  --tblr-primary-fg: #ffffff;
+  --tblr-link-color: var(--code-blue);
+  --tblr-link-color-rgb: 0, 110, 198;
+  --tblr-link-hover-color: var(--code-blue-ink);
+  --tblr-link-hover-color-rgb: 0, 47, 105;
+
+  --tblr-danger: var(--code-red);
+  --tblr-danger-rgb: 213, 28, 56;
+  --tblr-warning: var(--code-orange);
+  --tblr-warning-rgb: 249, 134, 61;
+  --tblr-info: var(--code-cyan);
+  --tblr-info-rgb: 0, 170, 200;
+
+  --tblr-body-color: var(--code-navy);
+  --tblr-body-color-rgb: 34, 31, 51;
+  --tblr-secondary: var(--code-muted);
+  --tblr-secondary-rgb: 79, 79, 79;
+  --tblr-border-color: var(--code-border);
+
+  --tblr-border-radius: var(--code-radius-sm);
+  --tblr-border-radius-sm: 4px;
+  --tblr-border-radius-lg: var(--code-radius);
+
+  --tblr-font-sans-serif: var(--code-font);
+
+  /* Peach highlight for active navigation, straight from code.sa. */
+  --tblr-navbar-active-bg: var(--code-peach);
+}
+
+/* The CODE site sits on a white ground washed with a pale blue tint. */
+html[data-bs-theme='light'] body {
+  background-color: #f6f8fb;
+  background-image: radial-gradient(1200px 520px at 82% -6%, var(--code-blue-100) 0%, rgba(229, 244, 255, 0) 62%),
+    radial-gradient(900px 420px at 4% 102%, var(--code-peach-pale) 0%, rgba(254, 239, 230, 0) 60%);
+  background-attachment: fixed;
+}
+
+html[data-bs-theme='light'] .page {
+  background-color: transparent !important; /* NetBox sets this !important */
+}
+
+/* --------------------------------------------------------------------------
+   3. Tabler / Bootstrap token remapping — dark
+   --------------------------------------------------------------------------
+   code.sa is light-only, so the dark palette extends the identity rather than
+   copying it: the navy from the wordmark becomes the surface family and the
+   cooler half of the brandmark carries the accents.
+   -------------------------------------------------------------------------- */
+
+html[data-bs-theme='dark'] {
+  /* Surface family derived from the wordmark navy #221F33. NetBox's own dark
+     palette is a blue-black ($rich-black #001423); these replace it so the
+     whole UI sits in one colour family. */
+  --code-dark-ground: #151322;
+  --code-dark-surface: #1e1b2e;
+  --code-dark-border: #302c44;
+
+  --tblr-primary: var(--code-cyan-300);
+  --tblr-primary-rgb: 79, 200, 224;
+  --tblr-primary-fg: #0e0d16;
+  --tblr-link-color: var(--code-cyan-300);
+  --tblr-link-color-rgb: 79, 200, 224;
+  --tblr-link-hover-color: #8adcee;
+  --tblr-link-hover-color-rgb: 138, 220, 238;
+
+  --tblr-danger: #f0546d;
+  --tblr-danger-rgb: 240, 84, 109;
+  --tblr-warning: var(--code-orange);
+  --tblr-warning-rgb: 249, 134, 61;
+  --tblr-info: var(--code-cyan-300);
+  --tblr-info-rgb: 79, 200, 224;
+
+  /* These four MUST be restated here. The light block also targets bare :root,
+     which otherwise wins in dark mode and paints navy text on a navy ground. */
+  --tblr-body-color: #e6e4f0;
+  --tblr-body-color-rgb: 230, 228, 240;
+  --tblr-secondary: #a9a4bd;
+  --tblr-secondary-rgb: 169, 164, 189;
+
+  --tblr-body-bg: var(--code-dark-ground);
+  --tblr-bg-surface: var(--code-dark-surface);
+  --tblr-bg-surface-secondary: var(--code-dark-ground);
+  --tblr-bg-surface-tertiary: var(--code-dark-ground);
+  --tblr-border-color: var(--code-dark-border);
+  --tblr-border-radius: var(--code-radius-sm);
+  --tblr-border-radius-lg: var(--code-radius);
+  --tblr-font-sans-serif: var(--code-font);
+
+  --tblr-navbar-active-bg: rgba(79, 200, 224, 0.14);
+
+  background-color: var(--code-dark-ground);
+}
+
+/* NetBox pins these surfaces to $rich-black in dark mode; restate them in the
+   CODE navy family. Matching its selector weight is enough — this stylesheet
+   loads afterwards. */
+html[data-bs-theme='dark'] .card {
+  background: var(--code-dark-surface) !important;
+}
+
+html[data-bs-theme='dark'] .page-header {
+  background-color: var(--code-dark-surface);
+}
+
+html[data-bs-theme='dark'] body {
+  background-color: var(--code-dark-ground);
+  background-image: radial-gradient(1100px 480px at 84% -8%, rgba(0, 110, 198, 0.16) 0%, rgba(0, 110, 198, 0) 64%),
+    radial-gradient(820px 400px at 2% 104%, rgba(231, 75, 98, 0.1) 0%, rgba(231, 75, 98, 0) 62%);
+  background-attachment: fixed;
+}
+
+html[data-bs-theme='dark'] .page {
+  background-color: transparent !important; /* NetBox sets this !important */
+}
+
+/* --------------------------------------------------------------------------
+   4. Typography
+   -------------------------------------------------------------------------- */
+
+body {
+  font-family: var(--code-font);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.card-title,
+.navbar-brand {
+  font-family: var(--code-font);
+  letter-spacing: -0.011em;
+}
+
+.page-header h1,
+.page-header .page-title {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   5. Brand ribbon — the brandmark's colour sequence across the top edge
+   -------------------------------------------------------------------------- */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--code-spectrum);
+  z-index: 2000;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   6. Logo replacement
+   --------------------------------------------------------------------------
+   NetBox renders two <img> per lockup and hides one per colour scheme. The
+   `content` property swaps the rendered image without touching the template,
+   so the logo survives a NetBox upgrade untouched.
+
+   Both placements use the compact lockup (mark + wordmark). The strapline that
+   is baked into the full lockup renders around 7px tall at the sizes the UI
+   allows; it is drawn as live text below instead, which stays legible, follows
+   the colour scheme and can be changed in PLUGINS_CONFIG. The full lockups
+   remain in the asset set for print and correspondence.
+   -------------------------------------------------------------------------- */
+
+.navbar-brand-image.hide-theme-dark,
+.page-center .logo.hide-theme-dark {
+  content: url('../img/code-logo-compact.svg');
+}
+
+.navbar-brand-image.hide-theme-light,
+.page-center .logo.hide-theme-light {
+  content: url('../img/code-logo-compact-dark.svg');
+}
+
+.navbar-brand-image {
+  height: 30px !important; /* Tabler sets a fixed height !important */
+  width: auto !important;
+  max-width: 100%;
+}
+
+.navbar-vertical.navbar-expand-lg .navbar-brand {
+  padding-block: 1.1rem 0.35rem;
+}
+
+/* Replace the NetBox edition label ("Community") with the product descriptor.
+   CSS paints it first so there is no flash, then code-branding.js swaps the
+   real text node and adds .code-edition-set — the pseudo-element alone is
+   invisible to assistive technology. */
+.netbox-edition {
+  font-size: 0 !important;
+  line-height: 0;
+}
+
+.netbox-edition::after,
+.netbox-edition.code-edition-set {
+  display: block;
+  font-size: 0.6875rem !important;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--code-muted-2);
+}
+
+.netbox-edition::after {
+  content: var(--code-product-name);
+}
+
+.netbox-edition.code-edition-set::after {
+  content: none;
+}
+
+html[data-bs-theme='dark'] .netbox-edition::after,
+html[data-bs-theme='dark'] .netbox-edition.code-edition-set {
+  color: #8f8aa8;
+}
+
+/* --------------------------------------------------------------------------
+   7. Sidebar navigation
+   -------------------------------------------------------------------------- */
+
+html[data-bs-theme='light'] .navbar-vertical.navbar-expand-lg {
+  background: linear-gradient(180deg, rgba(0, 110, 198, 0) 0%, rgba(0, 110, 198, 0.05) 100%), #ffffff;
+  border-inline-end: 1px solid var(--code-border);
+}
+
+html[data-bs-theme='dark'] .navbar-vertical.navbar-expand-lg {
+  background: linear-gradient(180deg, rgba(0, 170, 200, 0) 0%, rgba(0, 170, 200, 0.07) 100%),
+    var(--code-dark-surface);
+  border-inline-end: 1px solid var(--code-dark-border);
+}
+
+/* Nav item labels. NetBox pins these to its own brand colours with !important
+   in the dark theme, so both rules are restated here. */
+.navbar-vertical.navbar-expand-lg .navbar-collapse .nav-link-icon,
+.navbar-vertical.navbar-expand-lg .navbar-collapse .nav-link-title {
+  color: var(--code-navy);
+}
+
+html[data-bs-theme='dark'] .navbar-vertical.navbar-expand-lg .navbar-collapse .nav-link-icon,
+html[data-bs-theme='dark'] .navbar-vertical.navbar-expand-lg .navbar-collapse .nav-link-title {
+  color: #e6e4f0 !important;
+}
+
+.navbar-vertical.navbar-expand-lg .navbar-collapse .text-secondary {
+  color: var(--code-blue) !important; /* NetBox sets teal !important */
+}
+
+html[data-bs-theme='dark'] .navbar-vertical.navbar-expand-lg .navbar-collapse .text-secondary {
+  color: var(--code-cyan-300) !important;
+}
+
+/* Submenu entries; NetBox colours these $rich-black, which is a different navy. */
+.navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item > a {
+  color: var(--code-navy);
+}
+
+/* Menu group headings carry the same asymmetric corner as their children. */
+.navbar-vertical.navbar-expand-lg .navbar-collapse .nav-item.dropdown > .nav-link {
+  border-radius: var(--code-nav-radius);
+  transition: background-color 0.2s ease;
+}
+
+/* The signature asymmetric highlight on hovered/active menu entries. */
+.navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item {
+  border-radius: var(--code-nav-radius);
+  transition: background-color 0.2s ease;
+}
+
+html[data-bs-theme='light'] .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item:hover,
+html[data-bs-theme='light'] .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item.active,
+html[data-bs-theme='light'] .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item:focus-within {
+  background-color: var(--code-peach);
+}
+
+html[data-bs-theme='dark'] .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item:hover,
+html[data-bs-theme='dark'] .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item.active,
+html[data-bs-theme='dark'] .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item:focus-within {
+  background-color: rgba(79, 200, 224, 0.16) !important; /* NetBox sets its own !important */
+}
+
+/* Active menu group marker. */
+.navbar-vertical.navbar-expand-lg .nav-item.dropdown.active::after {
+  border-color: var(--code-blue) !important; /* NetBox sets teal !important */
+}
+
+html[data-bs-theme='dark'] .navbar-vertical.navbar-expand-lg .nav-item.dropdown.active::after {
+  border-color: var(--code-cyan-300) !important;
+}
+
+/* No sidebar watermark: at any opacity subtle enough not to hurt the legibility
+   of the menu, the bar motif reads as a stain rather than a mark. The brand is
+   carried by the lockup, the top ribbon and the nav highlight instead. */
+
+/* Release/version block under the menu. */
+.navbar-vertical.navbar-expand-lg .navbar-collapse .text-muted a {
+  color: var(--code-blue);
+}
+
+/* --------------------------------------------------------------------------
+   8. Top header
+   -------------------------------------------------------------------------- */
+
+html[data-bs-theme='light'] .navbar.sticky-top {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--code-border);
+}
+
+html[data-bs-theme='dark'] .navbar.sticky-top {
+  background: color-mix(in srgb, var(--code-dark-surface) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--code-dark-border);
+}
+
+/* Search box */
+.navbar .input-icon .form-control {
+  border-radius: var(--code-radius);
+  border-color: var(--code-border);
+  min-width: 20rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar .input-icon .form-control:focus {
+  border-color: var(--code-blue);
+  box-shadow: 0 0 0 3px rgba(0, 110, 198, 0.14);
+}
+
+html[data-bs-theme='dark'] .navbar .input-icon .form-control {
+  border-color: var(--code-dark-border);
+}
+
+html[data-bs-theme='dark'] .navbar .input-icon .form-control:focus {
+  border-color: var(--code-cyan-300);
+  box-shadow: 0 0 0 3px rgba(79, 200, 224, 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   9. Buttons
+   --------------------------------------------------------------------------
+   The corporate site's primary CTA is the warm 109deg gradient; it is applied
+   to .btn-primary only. Destructive actions stay a flat red so the two never
+   read as the same control.
+   -------------------------------------------------------------------------- */
+
+.btn {
+  border-radius: var(--code-radius-sm);
+  font-weight: 500;
+  transition: background 0.3s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--code-gradient);
+  border-color: transparent;
+  color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+  background: var(--code-gradient-hover);
+  border-color: transparent;
+  color: #ffffff !important;
+}
+
+/* NetBox's dark theme forces near-black text on .btn-primary at a higher
+   specificity than a bare .btn-primary rule; restate it at the same weight. */
+html[data-bs-theme='dark'] .btn-primary,
+html[data-bs-theme='dark'] .btn-primary:hover,
+html[data-bs-theme='dark'] .btn-primary:focus,
+html[data-bs-theme='dark'] .btn-primary:active {
+  color: #ffffff !important;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 18px rgba(231, 75, 98, 0.28);
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+  background: var(--code-gradient);
+  opacity: 0.55;
+}
+
+/* Outline/secondary buttons follow the blue accent rather than the gradient. */
+.btn-outline-primary {
+  color: var(--code-blue);
+  border-color: var(--code-blue);
+}
+
+.btn-outline-primary:hover {
+  background: var(--code-blue);
+  color: #ffffff;
+}
+
+html[data-bs-theme='dark'] .btn-outline-primary {
+  color: var(--code-cyan-300);
+  border-color: var(--code-cyan-300);
+}
+
+.btn-danger {
+  background-color: var(--code-red);
+  border-color: var(--code-red);
+}
+
+/* .bg-primary / .text-bg-primary are deliberately left to NetBox: in dark mode
+   --tblr-primary is the light cyan, and NetBox already pairs those surfaces
+   with near-black text, which is the correct contrast direction. Only
+   .btn-primary needs overriding, because it carries the warm gradient. */
+
+/* --------------------------------------------------------------------------
+   10. Cards, panels and tables
+   -------------------------------------------------------------------------- */
+
+.card {
+  border-radius: var(--code-radius);
+  border-color: var(--code-border);
+  box-shadow: var(--code-shadow-sm);
+}
+
+html[data-bs-theme='dark'] .card {
+  border-color: var(--code-dark-border);
+  box-shadow: none;
+}
+
+.card-header {
+  border-top-left-radius: var(--code-radius);
+  border-top-right-radius: var(--code-radius);
+  min-height: 3rem;
+}
+
+/* Panel headers get the quiet tracked-out treatment. NetBox renders these as
+   <h2 class="card-header"> with the label as direct text, so the rule targets
+   the header itself rather than a nested .card-title.
+
+   Dashboard widgets are excluded: their headers are coloured text-bg-*
+   surfaces carrying light text, so a muted grey would drop them to unreadable
+   contrast, and their titles are user-authored and read poorly in caps. */
+.card-header:not([class*='text-bg-']) {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--code-muted);
+}
+
+/* Controls that live inside a panel header keep normal sentence case. */
+.card-header:not([class*='text-bg-']) a,
+.card-header:not([class*='text-bg-']) .btn,
+.card-header:not([class*='text-bg-']) .badge,
+.card-header:not([class*='text-bg-']) input,
+.card-header:not([class*='text-bg-']) select {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+}
+
+html[data-bs-theme='dark'] .card-header:not([class*='text-bg-']) {
+  color: #a9a4bd;
+}
+
+.table thead th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--code-muted);
+  border-bottom: 1px solid var(--code-border);
+}
+
+html[data-bs-theme='dark'] .table thead th,
+html[data-bs-theme='dark'] .markdown > table thead th {
+  color: #a9a4bd;
+  border-bottom-color: var(--code-dark-border);
+  /* NetBox pins this to $rich-black !important; same weight, loaded later. */
+  background: var(--code-dark-surface) !important;
+}
+
+html[data-bs-theme='light'] .table-hover > tbody > tr:hover > * {
+  --tblr-table-accent-bg: rgba(0, 110, 198, 0.045);
+}
+
+/* Form controls */
+.form-control,
+.form-select,
+.ts-control {
+  border-radius: var(--code-radius-sm);
+  border-color: var(--code-border);
+}
+
+.form-control:focus,
+.form-select:focus,
+.ts-control.focus {
+  border-color: var(--code-blue);
+  box-shadow: 0 0 0 3px rgba(0, 110, 198, 0.14);
+}
+
+html[data-bs-theme='dark'] .form-control:focus,
+html[data-bs-theme='dark'] .form-select:focus,
+html[data-bs-theme='dark'] .ts-control.focus {
+  border-color: var(--code-cyan-300);
+  box-shadow: 0 0 0 3px rgba(79, 200, 224, 0.18);
+}
+
+/* Tabs: underline in the brand blue. */
+.page-tabs .nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active {
+  border-bottom-color: var(--code-blue);
+}
+
+html[data-bs-theme='dark'] .page-tabs .nav-tabs .nav-link.active,
+html[data-bs-theme='dark'] .nav-tabs .nav-link.active {
+  border-bottom-color: var(--code-cyan-300);
+}
+
+html[data-bs-theme='dark'] .page-tabs .nav-tabs .nav-link.active {
+  background-color: var(--code-dark-surface) !important; /* NetBox: $rich-black-light */
+}
+
+/* --------------------------------------------------------------------------
+   11. Login page
+   -------------------------------------------------------------------------- */
+
+.page.page-center {
+  position: relative;
+}
+
+html[data-bs-theme='light'] .page.page-center {
+  background:
+    radial-gradient(760px 520px at 50% -18%, var(--code-blue-100) 0%, rgba(229, 244, 255, 0) 68%),
+    radial-gradient(620px 460px at 8% 108%, var(--code-peach-pale) 0%, rgba(254, 239, 230, 0) 66%),
+    radial-gradient(560px 420px at 96% 96%, #fce8eb 0%, rgba(252, 232, 235, 0) 64%), #ffffff !important;
+}
+
+html[data-bs-theme='dark'] .page.page-center {
+  background:
+    radial-gradient(760px 520px at 50% -18%, rgba(0, 110, 198, 0.24) 0%, rgba(0, 110, 198, 0) 68%),
+    radial-gradient(620px 460px at 8% 108%, rgba(231, 75, 98, 0.14) 0%, rgba(231, 75, 98, 0) 66%),
+    var(--code-dark-ground) !important;
+}
+
+.page-center .logo {
+  height: 40px !important; /* the template sets height="80" as an attribute */
+  width: auto;
+}
+
+/* Product name + strapline beneath the login lockup. */
+.page-center .container-tight > .text-center:first-child::after {
+  content: var(--code-login-tagline);
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  background: linear-gradient(270deg, var(--code-grad-to), var(--code-grad-from));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.page-center .card {
+  border-radius: var(--code-radius-lg);
+  border: 1px solid var(--code-border);
+  box-shadow: var(--code-shadow), var(--code-shadow-lg);
+}
+
+html[data-bs-theme='dark'] .page-center .card {
+  border-color: var(--code-dark-border);
+}
+
+.page-center .form-footer .btn-primary {
+  border-radius: var(--code-radius-pill);
+  padding-block: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.page-center .form-footer .btn-primary:hover {
+  transform: scale(0.985); /* the site's hover micro-interaction */
+}
+
+/* --------------------------------------------------------------------------
+   12. Footer
+   -------------------------------------------------------------------------- */
+
+.footer .text-primary {
+  color: var(--code-blue) !important; /* NetBox pins this to its own navy */
+}
+
+html[data-bs-theme='dark'] .footer .text-primary {
+  color: var(--code-cyan-300) !important;
+}
+
+/* NetBox Labs / community outreach links are not part of the CODE product
+   surface. The functional links (docs, REST API, GraphQL) are left intact.
+   The list item is hidden rather than the anchor, so no empty slot remains. */
+.footer .list-inline-item:has(> a[href*='github.com/netbox-community']),
+.footer .list-inline-item:has(> a[href*='netdev.chat']),
+.footer .list-inline-item:has(> a[href*='linkedin.com/company/netboxlabs']),
+.footer .list-inline-item:has(> a[href^='mailto:support@netboxlabs.com']) {
+  display: none;
+}
+
+/* "Get Cloud | Get Enterprise" upsell under the sidebar menu. */
+.navbar-vertical.navbar-expand-lg .navbar-collapse .text-muted div:has(> a[href*='netboxlabs.com']) {
+  display: none;
+}
+
+/* Attribution + support link. NetBox is Apache-2.0 and this is a
+   "CODE platform powered by NetBox", so the credit stays visible. */
+.footer .container-fluid > ul:first-of-type::after {
+  content: var(--code-powered-by);
+  margin-inline-start: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--code-muted-2);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   13. Misc accents
+   -------------------------------------------------------------------------- */
+
+::selection {
+  background-color: rgba(0, 110, 198, 0.22);
+}
+
+html[data-bs-theme='dark'] ::selection {
+  background-color: rgba(79, 200, 224, 0.28);
+}
+
+a {
+  text-underline-offset: 0.15em;
+}
+
+/* Progress bars are deliberately NOT restyled: NetBox colours them with
+   bg-success / bg-warning / bg-danger to convey prefix, aggregate and IP-range
+   utilisation. A blanket .progress-bar background would override that and
+   destroy the signal. */
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .dropdown-item,
+  .nav-link,
+  .form-control {
+    transition: none !important;
+  }
+
+  .page-center .form-footer .btn-primary:hover {
+    transform: none;
+  }
+}
